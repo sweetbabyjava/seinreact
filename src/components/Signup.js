@@ -40,11 +40,18 @@ export default function Signup() {
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" ref={emailRef} required />
+              <Form.Control 
+                type="email" 
+                ref={emailRef}
+                placeholder="z.B. test@beispiel.de" 
+                required />
             </Form.Group>
             <Form.Group id="password">
               <Form.Label>Passwort</Form.Label>
-              <Form.Control type="password" ref={passwordRef} required />
+              <Form.Control 
+                type="password" 
+                ref={passwordRef} 
+                required />
             </Form.Group>
             <Form.Group id="password-confirm">
               <Form.Label>Passwort wiederholen</Form.Label>
@@ -57,7 +64,7 @@ export default function Signup() {
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        Schon ein Konto? <Link to="/login">Einloggen</Link>
+        Bereits ein Konto? <Link to="/login">Einloggen</Link>
       </div>
     </>
   )

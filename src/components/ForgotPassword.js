@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 
 export default function ForgotPassword() {
   const emailRef = useRef()
-  const { resetPassword } = useAuth()
+  const { resetPass } = useAuth()
   const [error, setError] = useState("")
   const [message, setMessage] = useState("")
   const [loading, setLoading] = useState(false)
@@ -17,7 +17,7 @@ export default function ForgotPassword() {
       setMessage("")
       setError("")
       setLoading(true)
-      await resetPassword(emailRef.current.value)
+      await resetPass(emailRef.current.value)
       setMessage("Eine Email mit einem Link zum zurücksetzen des Passwortes wurde versandt.")
     } catch {
       setError("Etwas ist schiefgelaufen")

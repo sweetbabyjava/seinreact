@@ -7,7 +7,7 @@ export default function UpdateProfile() {
   const emailRef = useRef()
   const passwordRef = useRef()
   const passwordConfirmRef = useRef()
-  const { currentUser, updatePassword, updateEmail } = useAuth()
+  const { currentUser, updatePass, updateMail } = useAuth()
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -23,10 +23,10 @@ export default function UpdateProfile() {
     setError("")
 
     if (emailRef.current.value !== currentUser.email) {
-      promises.push(updateEmail(emailRef.current.value))
+      promises.push(updateMail(emailRef.current.value))
     }
     if (passwordRef.current.value) {
-      promises.push(updatePassword(passwordRef.current.value))
+      promises.push(updatePass(passwordRef.current.value))
     }
 
     Promise.all(promises)
@@ -62,15 +62,15 @@ export default function UpdateProfile() {
               <Form.Control
                 type="password"
                 ref={passwordRef}
-                placeholder="Leave blank to keep the same"
+                placeholder="Leer lassen, um das Gleiche beizubehalten"
               />
             </Form.Group>
             <Form.Group id="password-confirm">
-              <Form.Label>Password bestätigen</Form.Label>
+              <Form.Label>Passwort bestätigen</Form.Label>
               <Form.Control
                 type="password"
                 ref={passwordConfirmRef}
-                placeholder="Leave blank to keep the same"
+                placeholder="Leer lassen, um das Gleiche beizubehalten"
               />
             </Form.Group>
             <Button disabled={loading} className="w-100" type="submit">

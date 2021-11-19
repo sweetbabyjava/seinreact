@@ -1,21 +1,22 @@
-import React, { Component } from "react"
-import Contacts from './contacts.js'
-import { Link, useNavigate } from "react-router-dom"
-import { Card, Button, Alert } from "react-bootstrap"
-
+import React, { Component } from "react";
+import Contacts from './contacts.js';
+import axios from "axios";
 
 class Data extends Component {
 
+ 
   state = {
     contacts: []
   }
    componentDidMount() {
-    fetch('http://jsonplaceholder.typicode.com/users')
+    axios.get('https://jsonplaceholder.typicode.com/users')
+    .then((response) => {this.setState({ contacts: response.data })})
+    /* fetch('http://jsonplaceholder.typicode.com/users')
     .then(res => res.json())
     .then((data) => {
       this.setState({ contacts: data })
     })
-    .catch(console.log)
+    .catch(console.log) */
   }
  
   render(){

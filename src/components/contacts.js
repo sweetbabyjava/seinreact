@@ -15,6 +15,13 @@ import { Link} from "react-router-dom"
               </Card.Body>
             </Card>
           ))}
+          <Card>
+              <Card.Body>
+                <Card.Title>John Doe</Card.Title>
+                <Card.Subtitle>Mitarbeiter</Card.Subtitle>
+                <Card.Text>Mag Kekse und Einhörner</Card.Text>
+              </Card.Body>
+            </Card>
         <Link to="/" className="btn btn-primary w-100 mt-3">
         Zurück
       </Link>
