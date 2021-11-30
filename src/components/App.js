@@ -9,6 +9,8 @@ import PrivateRoute from "./PrivateRoute"
 import ForgotPassword from "./ForgotPassword"
 import UpdateProfile from "./UpdateProfile"
 import Data from "./Data"
+import Data2 from "./Data2"
+import Contact from "./Contact"
 
 function App() {
   return (
@@ -29,6 +31,12 @@ function App() {
               </Route>
               <Route exact path='data' element={<PrivateRoute/>}>
                 <Route exact path='' element={<Data/>} />
+              </Route>
+              <Route exact path='data2' element={<PrivateRoute/>}>
+                <Route exact path='' element={<Data2/>} />
+              </Route>
+              <Route exact path='detailData' element={<PrivateRoute/>}>
+                <Route exact path='' element={<Contact/>} />
               </Route>
               <Route path='signup' element={<Signup/>} />
               <Route path="login" element={<Login/>} />

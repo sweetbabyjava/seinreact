@@ -11,6 +11,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
   const [loading, setLoading] = useState(true)
+  const [currentToken, setToken] = useState()
 
   function signup(email, password) {
     return createUserWithEmailAndPassword(auth,email, password)
@@ -38,6 +39,12 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if(user){
+      user.getIdToken().then( idToken => {
+        
+        setToken(idToken)
+      })
+      }
       setCurrentUser(user)
       setLoading(false)
     })
@@ -47,6 +54,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     currentUser,
+    currentToken,
     login,
     signup,
     logout,

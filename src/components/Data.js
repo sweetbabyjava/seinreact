@@ -4,19 +4,20 @@ import axios from "axios";
 
 class Data extends Component {
 
- 
+  
   state = {
     contacts: []
   }
    componentDidMount() {
-    axios.get('https://jsonplaceholder.typicode.com/users')
+
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '
+    }
+    axios.get('https://jsonplaceholder.typicode.com/users', headers)
     .then((response) => {this.setState({ contacts: response.data })})
-    /* fetch('http://jsonplaceholder.typicode.com/users')
-    .then(res => res.json())
-    .then((data) => {
-      this.setState({ contacts: data })
-    })
-    .catch(console.log) */
+    .catch(console.log)
+
   }
  
   render(){

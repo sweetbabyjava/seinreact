@@ -12,6 +12,7 @@ import { Link} from "react-router-dom"
                 <Card.Title>{contact.name}</Card.Title>
                 <Card.Subtitle>{contact.email}</Card.Subtitle>
                 <Card.Text>{contact.company.catchPhrase}</Card.Text>
+                <Link to={{ pathname: '/detailData', state: { detail: contact} }}>Ansehen</Link>
               </Card.Body>
             </Card>
           ))}
