@@ -48,7 +48,7 @@ export default function ForgotPassword() {
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        Noch kein Konto? <Link to="/signup">Registrieren</Link>
+        <h4>Noch kein Konto?</h4> <Link class="link-light" to="/signup">Registrieren</Link>
       </div>
     </>
   )

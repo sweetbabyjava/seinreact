@@ -4,10 +4,11 @@ import { useAuth } from "../contexts/AuthContext"
 import { Link, useNavigate } from "react-router-dom"
 
 export default function UpdateProfile() {
+  const nameRef = useRef()
   const emailRef = useRef()
   const passwordRef = useRef()
   const passwordConfirmRef = useRef()
-  const { currentUser, updatePass, updateMail } = useAuth()
+  const { currentUser, updatePass, updateMail, updateName } = useAuth()
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -22,6 +23,9 @@ export default function UpdateProfile() {
     setLoading(true)
     setError("")
 
+    if (nameRef.current.value !== currentUser.displayName) {
+      promises.push(updateName(nameRef.current.value))
+    }
     if (emailRef.current.value !== currentUser.email) {
       promises.push(updateMail(emailRef.current.value))
     }
@@ -48,6 +52,15 @@ export default function UpdateProfile() {
           <h2 className="text-center mb-4">Profil bearbeiten</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
+          <Form.Group id="displayName">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                ref={nameRef}
+                required
+                defaultValue={currentUser.displayName}
+              />
+            </Form.Group>
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>
               <Form.Control
@@ -80,7 +93,7 @@ export default function UpdateProfile() {
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        <Link to="/">Abbrechen</Link>
+        <Link class="link-light" to="/">Abbrechen</Link>
       </div>
     </>
   )

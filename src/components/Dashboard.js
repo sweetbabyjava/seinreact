@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom"
 
 export default function Dashboard() {
   const [error, setError] = useState("")
-  const { currentUser, logout, currentToken } = useAuth()
+  const { currentUser, logout } = useAuth()
   const navigate = useNavigate()
 
   async function handleLogout() {
@@ -27,17 +27,11 @@ export default function Dashboard() {
           {error && <Alert variant="danger">{error}</Alert>}
           <ul>
           <li><strong>Name:</strong> {currentUser.displayName}</li>
-          <li><strong>Telefon:</strong> {currentUser.phoneNumber}</li>
           <li><strong>Email:</strong> {currentUser.email}</li>
           <li><strong>providerID:</strong> {currentUser.providerId}</li>
-          <li><strong>uid:</strong> {currentUser.uid}</li>
-          <li><strong>Token:</strong> {currentToken}</li>
           </ul>
-          <Link to="data" className="btn btn-primary w-100 mt-3">
-            Daten ansehen
-          </Link>
           <Link to="data2" className="btn btn-primary w-100 mt-3">
-            Daten2 ansehen
+            Meine Daten
           </Link>
           <Link to="update-profile" className="btn btn-primary w-100 mt-3">
             Profil aktualisieren
@@ -45,7 +39,7 @@ export default function Dashboard() {
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        <Button variant="link" onClick={handleLogout}>
+        <Button variant="primary" onClick={handleLogout}>
           Ausloggen
         </Button>
       </div>

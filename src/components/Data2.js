@@ -1,4 +1,4 @@
-import Contact from './Contact.js';
+import Contacts from './contacts.js';
 import axios from "axios";
 import React, { useState, useEffect } from "react"
 import { useAuth } from "../contexts/AuthContext"
@@ -11,16 +11,16 @@ export default function Data2() {
 
   
     //console.log(headers)
-    axios.get('http://localhost:8080/private/user-details',{
+    axios.get('https://rest-api-4haunaqgaq-ew.a.run.app/notes',{
       headers: {
-        Authorization: 'Bearer ' + currentToken
+        Authoriation: 'Bearer ' + currentToken
       }}).then((response) => {
       setContact(response.data)
-      })}, [currentToken])
+      }).catch(console.log)}, [currentToken])
 
   return (
   
-    contact && <Contact contact={contact}/> 
+    contact && <Contacts contact={contact}/> 
 
 
 

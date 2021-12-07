@@ -64,7 +64,7 @@ export default function Signup() {
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        Bereits ein Konto? <Link to="/login">Einloggen</Link>
+      <h4>Bereits ein Konto?</h4> <Link class="link-light" to="/login">Einloggen</Link>
       </div>
     </>
   )
