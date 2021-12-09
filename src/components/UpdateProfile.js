@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom"
 export default function UpdateProfile() {
   const nameRef = useRef()
   const emailRef = useRef()
+  const photoRef = useRef()
   const passwordRef = useRef()
   const passwordConfirmRef = useRef()
   const { currentUser, updatePass, updateMail, updateName } = useAuth()
@@ -23,8 +24,8 @@ export default function UpdateProfile() {
     setLoading(true)
     setError("")
 
-    if (nameRef.current.value !== currentUser.displayName) {
-      promises.push(updateName(nameRef.current.value))
+    if (nameRef.current.value !== currentUser.displayName || photoRef.current.value !== currentUser.photoURL) {
+      promises.push(updateName(nameRef.current.value, photoRef.current.value))
     }
     if (emailRef.current.value !== currentUser.email) {
       promises.push(updateMail(emailRef.current.value))
@@ -32,22 +33,21 @@ export default function UpdateProfile() {
     if (passwordRef.current.value) {
       promises.push(updatePass(passwordRef.current.value))
     }
-
     Promise.all(promises)
     .then(() => {
-      navigate("/")
+      setLoading(false)
     })
     .catch(() => {
       setError("Etwas ist schiefgelaufen")
     })
     .finally(() => {
-      setLoading(false)
+      navigate("/")
     })
   }
 
   return (
-    <>
-      <Card>
+    <><center><h1 className="text-white bg-dark">Profil bearbeiten</h1></center>
+      <Card className="text-white bg-dark rounded-0">
         <Card.Body>
           <h2 className="text-center mb-4">Profil bearbeiten</h2>
           {error && <Alert variant="danger">{error}</Alert>}
@@ -65,16 +65,28 @@ export default function UpdateProfile() {
               <Form.Label>Email</Form.Label>
               <Form.Control
                 type="email"
+                name="email"
                 ref={emailRef}
                 required
                 defaultValue={currentUser.email}
+              />
+            </Form.Group>
+            <Form.Group id="displayName">
+              <Form.Label>Foto</Form.Label>
+              <Form.Control
+                type="url"
+                ref={photoRef}
+                autoComplete="off"
+                defaultValue={currentUser.photoURL}
               />
             </Form.Group>
             <Form.Group id="password">
               <Form.Label>Passwort</Form.Label>
               <Form.Control
                 type="password"
+                name="password"
                 ref={passwordRef}
+                autoComplete="new-password"
                 placeholder="Leer lassen, um das Gleiche beizubehalten"
               />
             </Form.Group>
@@ -83,17 +95,18 @@ export default function UpdateProfile() {
               <Form.Control
                 type="password"
                 ref={passwordConfirmRef}
+                autoComplete="off"
                 placeholder="Leer lassen, um das Gleiche beizubehalten"
               />
             </Form.Group>
-            <Button disabled={loading} className="w-100" type="submit">
+            <Button disabled={loading} className="w-100 mt-3 btn btn-light" type="submit">
               Aktualisieren
             </Button>
           </Form>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        <Link class="link-light" to="/">Abbrechen</Link>
+        <Link className="text-white btn btn-dark w-100" to="/">Abbrechen</Link>
       </div>
     </>
   )

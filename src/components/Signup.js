@@ -12,30 +12,33 @@ export default function Signup() {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault()
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError("Passwords do not match")
+      return setError("Passwörter stimmen nicht überein")
     }
 
-    try {
+    
       setError("")
       setLoading(true)
-      await signup(emailRef.current.value, passwordRef.current.value)
-      navigate("/")
-    } catch {
-      setError("Etwas ist schiefgelaufen")
-    }
-
-    setLoading(false)
+      signup(emailRef.current.value, passwordRef.current.value)
+      .then(() => {setLoading(false); navigate("/")})
+      .catch((error)=> {
+        console.log(error.message)
+        if(error.message === "Firebase: Password should be at least 6 characters (auth/weak-password)."){
+          setError("Das Passwort muss mindestens 6 Zeichen enthalten.")
+          setLoading(false)
+        }
+      })
+    
   }
 
   return (
-    <>
-      <Card>
+    <><center><h1 className="text-white bg-dark">Registrieren</h1></center>
+      <Card className="text-white bg-dark rounded-0">
         <Card.Body>
-          <h2 className="text-center mb-4">Registrieren</h2>
+          
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
@@ -57,14 +60,14 @@ export default function Signup() {
               <Form.Label>Passwort wiederholen</Form.Label>
               <Form.Control type="password" ref={passwordConfirmRef} required />
             </Form.Group>
-            <Button disabled={loading} className="w-100" type="submit">
+            <Button disabled={loading} className="w-100 mt-2 btn-light" type="submit">
               Registrieren
             </Button>
           </Form>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-      <h4>Bereits ein Konto?</h4> <Link class="link-light" to="/login">Einloggen</Link>
+      <h4 className="text-white bg-dark">Bereits ein Konto?</h4> <Link className="text-white btn btn-dark w-100" to="/login">Einloggen</Link>
       </div>
     </>
   )

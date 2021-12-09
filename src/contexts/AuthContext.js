@@ -36,8 +36,8 @@ export function AuthProvider({ children }) {
   function updatePass(password) {
     return updatePassword(currentUser,password)
   }
-  function updateName(name) {
-    return updateProfile(currentUser, {displayName: name} )
+  function updateName(name, photo) {
+    return updateProfile(currentUser, {displayName: name, photoURL: photo} )
   }
 
   useEffect(() => {

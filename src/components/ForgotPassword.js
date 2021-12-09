@@ -28,7 +28,7 @@ export default function ForgotPassword() {
 
   return (
     <>
-      <Card>
+      <Card className="w-100 text-white bg-dark rounded-0">
         <Card.Body>
           <h2 className="text-center mb-4">Passwort vergessen</h2>
           {error && <Alert variant="danger">{error}</Alert>}
@@ -38,17 +38,17 @@ export default function ForgotPassword() {
               <Form.Label>Email</Form.Label>
               <Form.Control type="email" ref={emailRef} required />
             </Form.Group>
-            <Button disabled={loading} className="w-100" type="submit">
+            <Button disabled={loading} className="w-100 mt-3 btn-light" type="submit">
               Passwort zurücksetzen
             </Button>
           </Form>
           <div className="w-100 text-center mt-3">
-            <Link to="/login">Einloggen</Link>
+            <Link className="w-100  btn btn-light"to="/login">Einloggen</Link>
           </div>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        <h4>Noch kein Konto?</h4> <Link class="link-light" to="/signup">Registrieren</Link>
+        <h4 className="text-white bg-dark">Noch kein Konto?</h4> <Link class="text-white btn btn-dark w-100" to="/signup">Registrieren</Link>
       </div>
     </>
   )

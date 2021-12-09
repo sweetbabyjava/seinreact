@@ -1,34 +1,33 @@
-import React, { Component } from "react";
 import Contacts from './contacts.js';
 import axios from "axios";
+import React, { useState, useEffect } from "react"
+import { useAuth } from "../contexts/AuthContext"
 
-class Data extends Component {
+export default function Data() {
+  const [contact, setContact] = useState("")
+  const { currentToken } = useAuth()
 
-  
-  state = {
-    contacts: []
-  }
-   componentDidMount() {
+  useEffect(() => {
 
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '
-    }
-    axios.get('https://jsonplaceholder.typicode.com/users', headers)
-    .then((response) => {this.setState({ contacts: response.data })})
-    .catch(console.log)
 
-  }
- 
-  render(){
+    //console.log(headers)
+    axios.get('https://rest-api-cloud-4haunaqgaq-ew.a.run.app/notes', {
+      headers: {
+        Authorization: 'Bearer ' + currentToken
+      }
+    }).then((response) => {
+      setContact(response.data)
+    }).catch(console.log)
+  }, [currentToken])
+
   return (
-    this.state.contacts && <Contacts contacts={this.state.contacts}/> 
+
+    contact && <Contacts contacts={contact} />
 
 
 
   )
-  }
+
 }
 
 
-export default Data
