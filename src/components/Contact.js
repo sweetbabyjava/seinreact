@@ -1,12 +1,13 @@
 import { useLocation, Link, useNavigate } from "react-router-dom"
 import React, { useRef, useState } from "react"
-import { Form, Button, Card, Alert } from "react-bootstrap"
+import { Form, Button, Card, Alert, Row, Col, FloatingLabel } from "react-bootstrap"
 import { useAuth } from "../contexts/AuthContext"
 import axios from "axios";
 
 export default function Contact() {
   const titelRef = useRef()
   const textRef = useRef()
+  const languageRef= useRef()
   const location = useLocation()
   const { detail, formTitle, notEditable } = location.state
   const [loading, setLoading] = useState(false)
@@ -24,7 +25,7 @@ export default function Contact() {
         headers: {
           Authorization: 'Bearer ' + currentToken
         }
-      }).then((response) => {
+      }).then(() => {
         setLoading(false)
         navigate("/data")
       }).catch(setLoading(false))
@@ -47,7 +48,7 @@ export default function Contact() {
       }).then(() => {
         setLoading(false)
         navigate("/data")
-      }).catch(() =>{
+      }).catch(() => {
         setError(error.message);
         setLoading(false);
       })
@@ -56,13 +57,29 @@ export default function Contact() {
       setError("Keine Daten eingegeben")
       setLoading(false)
     }
-    
+
   }
   function translateNote(e) {
     e.preventDefault()
     setLoading(true)
     setError("")
-  }
+    if (languageRef.current.value) {
+      axios.put('https://rest-api-cloud-4haunaqgaq-ew.a.run.app/notes/translate/'+languageRef.current.value, detail, {
+        headers: {
+          Authorization: 'Bearer ' + currentToken
+        }
+      }).then(() => {
+        setLoading(false)
+        navigate("/data")
+      }).catch(setLoading(false))
+    }
+    else {
+      setError("Keine Sprache ausgewählt!")
+      setLoading(false)
+    }
+
+
+}
   function deleteNote(e) {
     e.preventDefault()
     setLoading(true)
@@ -73,9 +90,10 @@ export default function Contact() {
         setLoading(false)
         navigate("/data")
       })
-      .catch((error) =>{
+      .catch((error) => {
         setLoading(false);
-        setError(error.message)})
+        setError(error.message)
+      })
   }
   return (
     <div>
@@ -150,13 +168,31 @@ export default function Contact() {
               className="w-100 mt-2">
               Hinzufügen
             </Button>
-            <Button
-              onClick={translateNote}
-              disabled="1"
-              variant="light"
-              className="w-100 mt-2">
-              Übersetzen
-            </Button>
+            {!notEditable &&
+            <Row className="mt-2">
+              <Col className="w-50">
+                
+                  <Form.Select ref={languageRef} defaultValue="" aria-label="Sprachauswahl">
+                    <option>Sprache Auswählen</option>
+                    <option value="en">Englisch</option>
+                    <option value="fr">Französisch</option>
+                    <option value="tl">Tagalog</option>
+                    <option value="ru">Russisch</option>
+                    <option value="es">Spanisch</option>
+                    
+                  </Form.Select>
+                
+              </Col>
+              <Col className="w-50">
+                <Button
+                  onClick={translateNote}
+                  variant="light"
+                  className="w-100">
+                  Übersetzen
+                </Button>
+              </Col>
+            </Row>
+            }
             {!notEditable &&
               <Button
                 onClick={deleteNote}
