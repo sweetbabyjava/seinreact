@@ -9,7 +9,7 @@ const Contacts = ({ contacts }) => {
   }
   return (
     <div>
-      <center><h1 className="text-white bg-dark">Notizen</h1></center>
+      
       {contacts.map((contact) => (
         <Card key={contact.id} className="mt-5 text-white bg-dark rounded-0">
           <Card.Header>

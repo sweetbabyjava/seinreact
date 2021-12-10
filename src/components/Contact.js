@@ -12,6 +12,7 @@ export default function Contact() {
   const { detail, formTitle, notEditable } = location.state
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
   const { currentToken } = useAuth()
   const navigate = useNavigate()
 
@@ -20,6 +21,7 @@ export default function Contact() {
     setLoading(true)
     if (detail.title !== titelRef.current.value || detail.text !== textRef.current.value) {
       setError("")
+      setSuccess("")
       const note = { id: detail.id, uid: detail.uid, title: titelRef.current.value, text: textRef.current.value }
       axios.put('https://rest-api-cloud-4haunaqgaq-ew.a.run.app/notes/update', note, {
         headers: {
@@ -27,7 +29,7 @@ export default function Contact() {
         }
       }).then(() => {
         setLoading(false)
-        navigate("/data")
+        setSuccess("Daten wurden aktualisiert")
       }).catch(setLoading(false))
     }
     else {
@@ -47,7 +49,7 @@ export default function Contact() {
         }
       }).then(() => {
         setLoading(false)
-        navigate("/data")
+        setSuccess("Notiz wurde aktualisiert")
       }).catch(() => {
         setError(error.message);
         setLoading(false);
@@ -70,7 +72,9 @@ export default function Contact() {
         }
       }).then(() => {
         setLoading(false)
-        navigate("/data")
+        let tmp = ""
+        languageRef.current.value === "fr" ? tmp="Französisch" : 
+        setSuccess("Notiz wurde in " + tmp + " übersetzt.")
       }).catch(setLoading(false))
     }
     else {
@@ -88,6 +92,7 @@ export default function Contact() {
     )
       .then(() => {
         setLoading(false)
+        setSuccess("Notiz wurde gelöscht")
         navigate("/data")
       })
       .catch((error) => {
@@ -100,7 +105,7 @@ export default function Contact() {
       <Card className="w-100 text-white bg-dark rounded-0">
         <Card.Header><center><h1>{formTitle}</h1></center></Card.Header>
         <Card.Body>
-          {error && <Alert variant="danger">{error}</Alert>}
+          
           <Form onSubmit={handleSubmit}>
             {!notEditable &&
               <Form.Group id="creationDate">
@@ -156,6 +161,8 @@ export default function Contact() {
                 required
                 placeholder="Text eingeben..." />
             </Form.Group>
+            {error && <Alert className="mt-2 mb-0" variant="danger" onClose={() => setError("")} dismissible>{error}</Alert>}
+            {success && <Alert className="mt-2 mb-0" variant="success" onClose={() => setSuccess("")} dismissible>{success}</Alert>}
             {!notEditable &&
               <Button disabled={loading} className="w-100 mt-2 btn-light" type="submit">
                 Aktualisieren
@@ -174,11 +181,11 @@ export default function Contact() {
                 
                   <Form.Select ref={languageRef} defaultValue="" aria-label="Sprachauswahl">
                     <option>Sprache Auswählen</option>
-                    <option value="en">Englisch</option>
-                    <option value="fr">Französisch</option>
-                    <option value="tl">Tagalog</option>
-                    <option value="ru">Russisch</option>
-                    <option value="es">Spanisch</option>
+                    <option value2="Englisch" value="en">Englisch</option>
+                    <option value2="Französisch" value="fr">Französisch</option>
+                    <option value2="Tagalog" value="tl">Tagalog</option>
+                    <option value2="Russisch" value="ru">Russisch</option>
+                    <option value2="Spanisch" value="es">Spanisch</option>
                     
                   </Form.Select>
                 
