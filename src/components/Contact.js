@@ -17,6 +17,11 @@ export default function Contact() {
   const { currentToken } = useAuth()
   const navigate = useNavigate()
 
+  function handleChange(e) {
+    e.preventDefault()
+    setNote({...note,text: e.target.value});
+  }
+
   function handleSubmit(e) {
     e.preventDefault()
     setLoading(true)
@@ -164,19 +169,20 @@ export default function Contact() {
             <Form.Group id="text">
               <Form.Label>Text</Form.Label>
               <Form.Control as="textarea"
-                rows={8}
+                rows={6}
                 ref={textRef}
                 value={note.text}
-                required
-                placeholder="Text eingeben..." />
+                placeholder= {note.text ? note.text : "Text eingeben..." }
+                onChange={handleChange}/>
             </Form.Group>
             {error && <Alert className="mt-2 mb-0" variant="danger" onClose={() => setError("")} dismissible>{error}</Alert>}
             {success && <Alert className="mt-2 mb-0" variant="success" onClose={() => setSuccess("")} dismissible>{success}</Alert>}
             {!notEditable &&
               <Button disabled={loading} className="w-100 mt-2 btn-light" type="submit">
-                Aktualisieren
+                Speichern
               </Button>
             }
+            {notEditable &&
             <Button
               onClick={addNote}
               disabled={loading}
@@ -184,6 +190,7 @@ export default function Contact() {
               className="w-100 mt-2">
               Hinzufügen
             </Button>
+            }
             {!notEditable &&
               <Row className="mt-2">
                 <Col className="w-50">
