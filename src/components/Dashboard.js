@@ -21,7 +21,7 @@ export default function Dashboard() {
   }
 
   return (
-    <><center><h1 className="text-white bg-dark">Profil</h1></center>
+    <><center><h1 className="text-white bg-dark">Mein Profil</h1></center>
       <Card className="text-white bg-dark rounded-0">
       <Card.Img variant="top" src={currentUser.photoURL ? currentUser.photoURL : logo} />
         <Card.Body>
