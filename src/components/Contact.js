@@ -1,15 +1,16 @@
 import { useLocation, Link, useNavigate } from "react-router-dom"
-import React, { useRef, useState } from "react"
-import { Form, Button, Card, Alert, Row, Col} from "react-bootstrap"
+import React, { useRef, useState, useEffect } from "react"
+import { Form, Button, Card, Alert, Row, Col } from "react-bootstrap"
 import { useAuth } from "../contexts/AuthContext"
 import axios from "axios";
 
 export default function Contact() {
   const titelRef = useRef()
   const textRef = useRef()
-  const languageRef= useRef()
+  const languageRef = useRef()
   const location = useLocation()
   const { detail, formTitle, notEditable } = location.state
+  const [note, setNote] = useState(detail)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
@@ -19,17 +20,19 @@ export default function Contact() {
   function handleSubmit(e) {
     e.preventDefault()
     setLoading(true)
-    if (detail.title !== titelRef.current.value || detail.text !== textRef.current.value) {
+    if (note.title !== titelRef.current.value || note.text !== textRef.current.value) {
       setError("")
       setSuccess("")
-      const note = { id: detail.id, uid: detail.uid, title: titelRef.current.value, text: textRef.current.value }
-      axios.put('https://rest-api-cloud-4haunaqgaq-ew.a.run.app/notes/update', note, {
+      let newNote = { id: note.id, uid: note.uid, title: titelRef.current.value, text: textRef.current.value }
+      axios.put('https://rest-api-cloud-4haunaqgaq-ew.a.run.app/notes/update', newNote, {
         headers: {
           Authorization: 'Bearer ' + currentToken
         }
-      }).then(() => {
+      }).then((response) => {
+
         setLoading(false)
         setSuccess("Daten wurden aktualisiert")
+
       }).catch(setLoading(false))
     }
     else {
@@ -66,15 +69,21 @@ export default function Contact() {
     setLoading(true)
     setError("")
     if (languageRef.current.value) {
-      axios.put('https://rest-api-cloud-4haunaqgaq-ew.a.run.app/notes/translate/'+languageRef.current.value, detail, {
+      axios.put('https://rest-api-cloud-4haunaqgaq-ew.a.run.app/notes/translate/' + languageRef.current.value, note, {
         headers: {
           Authorization: 'Bearer ' + currentToken
         }
-      }).then(() => {
-        setLoading(false)
+      }).then((response) => {
+        setNote(response.data)
         let tmp = ""
-        languageRef.current.value === "fr" ? tmp="Französisch" : 
+        languageRef.current.value === "fr" ? tmp = "Französisch" :
+          languageRef.current.value === "tl" ? tmp = "Tagalog" :
+            languageRef.current.value === "en" ? tmp = "Englisch" :
+              languageRef.current.value === "ru" ? tmp = "Russisch" :
+                languageRef.current.value === "es" ? tmp = "Spanisch" :
+                  tmp = "was anderes"
         setSuccess("Notiz wurde in " + tmp + " übersetzt.")
+        setLoading(false)
       }).catch(setLoading(false))
     }
     else {
@@ -83,12 +92,12 @@ export default function Contact() {
     }
 
 
-}
+  }
   function deleteNote(e) {
     e.preventDefault()
     setLoading(true)
     setError("")
-    axios.delete('https://rest-api-cloud-4haunaqgaq-ew.a.run.app/notes/delete', { data: detail, headers: { Authorization: 'Bearer ' + currentToken } }
+    axios.delete('https://rest-api-cloud-4haunaqgaq-ew.a.run.app/notes/delete', { data: note, headers: { Authorization: 'Bearer ' + currentToken } }
     )
       .then(() => {
         setLoading(false)
@@ -105,9 +114,9 @@ export default function Contact() {
       <Card className="w-100 text-white bg-dark rounded-0">
         <Card.Header><center><h1>{formTitle}</h1></center></Card.Header>
         <Card.Body>
-          
+
           <Form onSubmit={handleSubmit}>
-            {!notEditable &&
+            
               <Form.Group id="creationDate">
                 <Form.Label>Datum</Form.Label>
                 <Form.Control
@@ -117,27 +126,27 @@ export default function Contact() {
                     year: "numeric",
                     month: "long",
                     day: "2-digit"
-                  }).format(new Date(detail.creationDate))}
+                  }).format(notEditable ? new Date() : new Date(note.creationDate))}
                 />
               </Form.Group>
-            }
-            {!notEditable &&
+            
+            {false &&
               <Form.Group id="UID">
                 <Form.Label>UID</Form.Label>
                 <Form.Control
                   type="text"
                   readOnly
-                  defaultValue={detail.uid}
+                  defaultValue={note.uid}
                 />
               </Form.Group>
             }
-            {!notEditable &&
+            {false &&
               <Form.Group id="ID">
                 <Form.Label>ID</Form.Label>
                 <Form.Control
                   type="text"
                   readOnly
-                  defaultValue={detail.id}
+                  defaultValue={note.id}
                 />
               </Form.Group>
             }
@@ -148,7 +157,7 @@ export default function Contact() {
                 ref={titelRef}
                 required
                 placeholder="Titel vergeben..."
-                defaultValue={detail.title}
+                defaultValue={note.title}
               />
             </Form.Group>
 
@@ -157,7 +166,7 @@ export default function Contact() {
               <Form.Control as="textarea"
                 rows={8}
                 ref={textRef}
-                defaultValue={detail.text}
+                value={note.text}
                 required
                 placeholder="Text eingeben..." />
             </Form.Group>
@@ -176,9 +185,8 @@ export default function Contact() {
               Hinzufügen
             </Button>
             {!notEditable &&
-            <Row className="mt-2">
-              <Col className="w-50">
-                
+              <Row className="mt-2">
+                <Col className="w-50">
                   <Form.Select ref={languageRef} defaultValue="" aria-label="Sprachauswahl">
                     <option>Sprache Auswählen</option>
                     <option value2="Englisch" value="en">Englisch</option>
@@ -186,19 +194,17 @@ export default function Contact() {
                     <option value2="Tagalog" value="tl">Tagalog</option>
                     <option value2="Russisch" value="ru">Russisch</option>
                     <option value2="Spanisch" value="es">Spanisch</option>
-                    
                   </Form.Select>
-                
-              </Col>
-              <Col className="w-50">
-                <Button
-                  onClick={translateNote}
-                  variant="light"
-                  className="w-100">
-                  Übersetzen
-                </Button>
-              </Col>
-            </Row>
+                </Col>
+                <Col className="w-50">
+                  <Button
+                    onClick={translateNote.bind(this)}
+                    variant="light"
+                    className="w-100">
+                    Übersetzen
+                  </Button>
+                </Col>
+              </Row>
             }
             {!notEditable &&
               <Button

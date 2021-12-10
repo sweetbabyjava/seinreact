@@ -2,7 +2,7 @@ import Contacts from './contacts.js';
 import axios from "axios";
 import React, { useState, useEffect } from "react"
 import { useAuth } from "../contexts/AuthContext"
-import { Tabs, Tab, Stack} from "react-bootstrap"
+import { Tabs, Tab} from "react-bootstrap"
 
 export default function Data() {
   const [contact, setContact] = useState("")
