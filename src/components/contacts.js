@@ -2,7 +2,7 @@ import React from 'react'
 import { Card } from "react-bootstrap"
 import { Link } from "react-router-dom"
 
-const Contacts = ({ contacts }) => {
+const Contacts = ({ notes }) => {
 
   function dateDiff(date1, date2) {
     return (Math.ceil((date2 - date1) / 8.64e7))*-1;
@@ -10,18 +10,18 @@ const Contacts = ({ contacts }) => {
   return (
     <div>
       
-      {contacts.map((contact) => (
-        <Card key={contact.id} className="mt-5 text-white bg-dark rounded-0">
+      {notes.map((note) => (
+        <Card key={note.id} className="mt-2 text-white bg-dark rounded-0">
           <Card.Header>
-            <Card.Title>{contact.title}</Card.Title>
+            <Card.Title>{note.title}</Card.Title>
           </Card.Header>
           <Card.Body>
-            <Card.Text className="pre-wrap">{contact.text}</Card.Text>
+            <Card.Text className="pre-wrap">{note.text}</Card.Text>
             
           </Card.Body>
-          <Card.Footer className="text-muted"> {dateDiff(new Date(),new Date(contact.creationDate)) === 0 ? "Heute" : "Vor " + dateDiff(new Date(),new Date(contact.creationDate)) + " Tagen"}
+          <Card.Footer className="text-muted"> {dateDiff(new Date(),new Date(note.creationDate)) === 0 ? "Heute" : "Vor " + dateDiff(new Date(),new Date(note.creationDate)) + " Tagen"}
           <Link to='/Contact'
-              state={{ detail: contact, formTitle: "Notiz bearbeiten", notEditable: false }}
+              state={{ detail: note, formTitle: "Notiz bearbeiten", notEditable: false }}
               className="btn btn-light w-100 mt-3">Notiz bearbeiten
           </Link>
           </Card.Footer>

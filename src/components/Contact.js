@@ -1,5 +1,5 @@
 import { useLocation, Link, useNavigate } from "react-router-dom"
-import React, { useRef, useState, useEffect } from "react"
+import React, { useRef, useState} from "react"
 import { Form, Button, Card, Alert, Row, Col } from "react-bootstrap"
 import { useAuth } from "../contexts/AuthContext"
 import axios from "axios";
@@ -17,6 +17,8 @@ export default function Contact() {
   const [changed, setChanged] = useState(false)
   const { currentToken } = useAuth()
   const navigate = useNavigate()
+
+  
 
   function handleChange(e) {
     e.preventDefault()
