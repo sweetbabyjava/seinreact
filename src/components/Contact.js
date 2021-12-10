@@ -14,18 +14,20 @@ export default function Contact() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
+  const [changed, setChanged] = useState(false)
   const { currentToken } = useAuth()
   const navigate = useNavigate()
 
   function handleChange(e) {
     e.preventDefault()
     setNote({...note,text: e.target.value});
+    setChanged(true)
   }
 
   function handleSubmit(e) {
     e.preventDefault()
     setLoading(true)
-    if (note.title !== titelRef.current.value || note.text !== textRef.current.value) {
+    if (note.title !== titelRef.current.value || changed) {
       setError("")
       setSuccess("")
       let newNote = { id: note.id, uid: note.uid, title: titelRef.current.value, text: textRef.current.value }
@@ -36,6 +38,7 @@ export default function Contact() {
       }).then((response) => {
 
         setLoading(false)
+        setChanged(false)
         setSuccess("Daten wurden aktualisiert")
 
       }).catch(setLoading(false))
@@ -86,7 +89,8 @@ export default function Contact() {
             languageRef.current.value === "en" ? tmp = "Englisch" :
               languageRef.current.value === "ru" ? tmp = "Russisch" :
                 languageRef.current.value === "es" ? tmp = "Spanisch" :
-                  tmp = "was anderes"
+                languageRef.current.value === "de" ? tmp = "Deutsch" :
+                tmp = "was anderes"
         setSuccess("Notiz wurde in " + tmp + " übersetzt.")
         setLoading(false)
       }).catch(setLoading(false))
@@ -196,11 +200,12 @@ export default function Contact() {
                 <Col className="w-50">
                   <Form.Select ref={languageRef} defaultValue="" aria-label="Sprachauswahl">
                     <option>Sprache Auswählen</option>
-                    <option value2="Englisch" value="en">Englisch</option>
-                    <option value2="Französisch" value="fr">Französisch</option>
-                    <option value2="Tagalog" value="tl">Tagalog</option>
-                    <option value2="Russisch" value="ru">Russisch</option>
-                    <option value2="Spanisch" value="es">Spanisch</option>
+                    <option value="en">Englisch</option>
+                    <option value="de">Deutsch</option>
+                    <option value="fr">Französisch</option>
+                    <option value="tl">Tagalog</option>
+                    <option value="ru">Russisch</option>
+                    <option value="es">Spanisch</option>
                   </Form.Select>
                 </Col>
                 <Col className="w-50">
