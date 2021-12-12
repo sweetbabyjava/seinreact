@@ -33,7 +33,7 @@ export default function Contact() {
       setError("")
       setSuccess("")
       let newNote = { id: note.id, uid: note.uid, title: titelRef.current.value, text: textRef.current.value }
-      axios.put('https://rest-api-cloud-4haunaqgaq-ew.a.run.app/notes/update', newNote, {
+      axios.put(process.env.REACT_APP_AXIOS_BASE_URL+'update', newNote, {
         headers: {
           Authorization: 'Bearer ' + currentToken
         }
@@ -56,7 +56,7 @@ export default function Contact() {
     setError("")
     if (titelRef.current.value !== "" || textRef.current.value !== "") {
       let note = { "title": titelRef.current.value, "text": textRef.current.value }
-      axios.post('https://rest-api-cloud-4haunaqgaq-ew.a.run.app/notes/create', note, {
+      axios.post(process.env.REACT_APP_AXIOS_BASE_URL+'create', note, {
         headers: {
           Authorization: 'Bearer ' + currentToken
         }
@@ -79,7 +79,7 @@ export default function Contact() {
     setLoading(true)
     setError("")
     if (languageRef.current.value) {
-      axios.put('https://rest-api-cloud-4haunaqgaq-ew.a.run.app/notes/translate/' + languageRef.current.value, note, {
+      axios.put(process.env.REACT_APP_AXIOS_BASE_URL+'translate/' + languageRef.current.value, note, {
         headers: {
           Authorization: 'Bearer ' + currentToken
         }
@@ -108,7 +108,7 @@ export default function Contact() {
     e.preventDefault()
     setLoading(true)
     setError("")
-    axios.delete('https://rest-api-cloud-4haunaqgaq-ew.a.run.app/notes/delete', { data: note, headers: { Authorization: 'Bearer ' + currentToken } }
+    axios.delete(process.env.REACT_APP_AXIOS_BASE_URL+'delete', { data: note, headers: { Authorization: 'Bearer ' + currentToken } }
     )
       .then(() => {
         setLoading(false)
