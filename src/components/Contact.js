@@ -133,7 +133,7 @@ export default function Contact() {
                 <Form.Control
                   type="text"
                   readOnly
-                  defaultValue={new Intl.DateTimeFormat("de-DE", {
+                  placeholder={new Intl.DateTimeFormat("de-DE", {
                     year: "numeric",
                     month: "long",
                     day: "2-digit"
