@@ -1,8 +1,9 @@
 import { useLocation, Link, useNavigate } from "react-router-dom"
 import React, { useRef, useState} from "react"
-import { Form, Button, Card, Alert, Row, Col } from "react-bootstrap"
+import { Form, Button, Card, Alert, Row, Col} from "react-bootstrap"
 import { useAuth } from "../contexts/AuthContext"
 import axios from "axios";
+import ShareModal from './ShareModal.js';
 
 export default function Contact() {
   const titelRef = useRef()
@@ -17,6 +18,10 @@ export default function Contact() {
   const [changed, setChanged] = useState(false)
   const { currentToken } = useAuth()
   const navigate = useNavigate()
+  const [shareModal, setShareModal] = useState(false)
+
+  const shareModalClose = () => setShareModal(false);
+  const shareModalShow = () => setShareModal(true);
 
   
 
@@ -33,7 +38,7 @@ export default function Contact() {
       setError("")
       setSuccess("")
       let newNote = { id: note.id, uid: note.uid, title: titelRef.current.value, text: textRef.current.value }
-      axios.put(process.env.REACT_APP_AXIOS_BASE_URL+'update', newNote, {
+      axios.put(process.env.REACT_APP_AXIOS_BASE_URL+'notes/update', newNote, {
         headers: {
           Authorization: 'Bearer ' + currentToken
         }
@@ -56,7 +61,7 @@ export default function Contact() {
     setError("")
     if (titelRef.current.value !== "" || textRef.current.value !== "") {
       let note = { "title": titelRef.current.value, "text": textRef.current.value }
-      axios.post(process.env.REACT_APP_AXIOS_BASE_URL+'create', note, {
+      axios.post(process.env.REACT_APP_AXIOS_BASE_URL+'notes/create', note, {
         headers: {
           Authorization: 'Bearer ' + currentToken
         }
@@ -79,7 +84,7 @@ export default function Contact() {
     setLoading(true)
     setError("")
     if (languageRef.current.value) {
-      axios.put(process.env.REACT_APP_AXIOS_BASE_URL+'translate/' + languageRef.current.value, note, {
+      axios.put(process.env.REACT_APP_AXIOS_BASE_URL+'notes/translate/' + languageRef.current.value, note, {
         headers: {
           Authorization: 'Bearer ' + currentToken
         }
@@ -108,7 +113,7 @@ export default function Contact() {
     e.preventDefault()
     setLoading(true)
     setError("")
-    axios.delete(process.env.REACT_APP_AXIOS_BASE_URL+'delete', { data: note, headers: { Authorization: 'Bearer ' + currentToken } }
+    axios.delete(process.env.REACT_APP_AXIOS_BASE_URL+'notes/delete', { data: note, headers: { Authorization: 'Bearer ' + currentToken } }
     )
       .then(() => {
         setLoading(false)
@@ -229,9 +234,20 @@ export default function Contact() {
                 Löschen
               </Button>
             }
+            {!notEditable &&
+              <Button
+                onClick={shareModalShow}
+                disabled={loading}
+                variant="light"
+                className="w-100 mt-2">
+                Teilen
+              </Button>
+            }
+
           </Form>
         </Card.Body>
       </Card>
+      <ShareModal shareModal={shareModal} shareModalClose={shareModalClose}></ShareModal>
       <Link to="/data" className="btn btn-dark w-100 mt-3">
         Zurück
       </Link>

@@ -28,15 +28,6 @@ const Contacts = ({ notes }) => {
           
         </Card>
       ))}
-      <Link to='/Contact'
-        state={{ detail: { title: "", text: "" }, formTitle: "Notiz Anlegen", notEditable: true }}
-        className="btn btn-dark w-100 mt-3">Neue Notiz anlegen
-      </Link>
-
-      <Link to="/"
-        className="btn btn-dark w-100 mt-3">
-        Zurück
-      </Link>
     </div>
 
 

@@ -2,7 +2,8 @@ import Contacts from './contacts.js';
 import axios from "axios";
 import React, { useState, useEffect } from "react"
 import { useAuth } from "../contexts/AuthContext"
-import { Tabs, Tab, Alert } from "react-bootstrap"
+import { Tabs, Tab, Alert} from "react-bootstrap"
+import { Link } from "react-router-dom"
 
 export default function Data() {
   const [notes, setNotes] = useState()
@@ -25,9 +26,11 @@ export default function Data() {
       headers: {
         Authorization: 'Bearer ' + currentToken
       }
+    
     }).then((response) => {
       setSharedNotes(response.data)
-    }).catch(console.log)
+      console.log(response.data)
+    }).catch()
   }, [currentToken])
 
   return (
@@ -37,7 +40,7 @@ export default function Data() {
           {notes && <Contacts notes={notes}></Contacts>}
         </Tab>
         <Tab eventKey="sharedwith" title="Mit dir geteilt" className="text-white  ">
-          {sharedNotes ?
+          {(sharedNotes+"") > 0 ?
             <Contacts notes={sharedNotes}></Contacts> :
             <Alert className="mt-2 mb-0 text-center" variant="primary">Es wurden noch keine Notizen geteilt.</Alert>
           }
@@ -46,6 +49,15 @@ export default function Data() {
           <Alert className="mt-2 mb-0 text-center" variant="primary">Sie haben noch keine Notizen geteilt.</Alert>
         </Tab>
       </Tabs>
+      <Link to='/Contact'
+        state={{ detail: { title: "", text: "" }, formTitle: "Notiz Anlegen", notEditable: true }}
+        className="btn btn-dark w-100 mt-3">Neue Notiz anlegen
+      </Link>
+
+      <Link to="/"
+        className="btn btn-dark w-100 mt-3">
+        Zurück
+      </Link>
     </>
   )
 }
