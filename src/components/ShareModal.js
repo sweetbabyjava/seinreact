@@ -3,7 +3,7 @@ import { Button, Modal, Dropdown, DropdownButton } from "react-bootstrap"
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext"
 
-const ShareModal = ({ note, shareModal, shareModalClose }) => {
+const ShareModal = ({ note, shareModal, shareModalClose, setSuccess, setError }) => {
     const { currentToken } = useAuth()
     const [users, setUsers] = useState()
     const [user, setUser] = useState()
@@ -26,9 +26,13 @@ const ShareModal = ({ note, shareModal, shareModalClose }) => {
                 Authorization: 'Bearer ' + currentToken
             }
 
-        }).then((response) => {
-            console.log(response.data)
-        }).catch()
+        }).then(() => {
+            setSuccess("Notiz wurde geteilt.")
+            console.log("Sharing succesful")
+        }).catch(() => {
+            setError("Es ist ein Fehler passiert. Versuche es später noch einmal.")
+        }
+        )
 
     };
 

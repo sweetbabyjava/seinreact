@@ -20,16 +20,18 @@ export default function Data() {
       }
     }).then((response) => {
       setNotes(response.data)
+      axios.get(process.env.REACT_APP_AXIOS_BASE_URL + 'notes/shared', {
+        headers: {
+          Authorization: 'Bearer ' + currentToken
+        }
+      
+      }).then((response) => {
+        setSharedNotes(response.data)
+      }).catch()
+
     }).catch(console.log)
 
-    axios.get(process.env.REACT_APP_AXIOS_BASE_URL + 'notes/shared', {
-      headers: {
-        Authorization: 'Bearer ' + currentToken
-      }
     
-    }).then((response) => {
-      setSharedNotes(response.data)
-    }).catch()
   }, [currentToken])
 
   return (
