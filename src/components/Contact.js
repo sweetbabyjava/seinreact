@@ -247,7 +247,7 @@ export default function Contact() {
           </Form>
         </Card.Body>
       </Card>
-      <ShareModal shareModal={shareModal} shareModalClose={shareModalClose}></ShareModal>
+      <ShareModal note={note} shareModal={shareModal} shareModalClose={shareModalClose}></ShareModal>
       <Link to="/data" className="btn btn-dark w-100 mt-3">
         Zurück
       </Link>

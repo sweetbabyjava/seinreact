@@ -14,7 +14,7 @@ export default function Data() {
 
 
     //console.log(headers)
-    axios.get(process.env.REACT_APP_AXIOS_BASE_URL, {
+    axios.get(process.env.REACT_APP_AXIOS_BASE_URL + 'notes', {
       headers: {
         Authorization: 'Bearer ' + currentToken
       }
@@ -22,14 +22,13 @@ export default function Data() {
       setNotes(response.data)
     }).catch(console.log)
 
-    axios.get(process.env.REACT_APP_AXIOS_BASE_URL + 'shared', {
+    axios.get(process.env.REACT_APP_AXIOS_BASE_URL + 'notes/shared', {
       headers: {
         Authorization: 'Bearer ' + currentToken
       }
     
     }).then((response) => {
       setSharedNotes(response.data)
-      console.log(response.data)
     }).catch()
   }, [currentToken])
 
@@ -40,7 +39,7 @@ export default function Data() {
           {notes && <Contacts notes={notes}></Contacts>}
         </Tab>
         <Tab eventKey="sharedwith" title="Mit dir geteilt" className="text-white  ">
-          {(sharedNotes+"") > 0 ?
+          {sharedNotes ?
             <Contacts notes={sharedNotes}></Contacts> :
             <Alert className="mt-2 mb-0 text-center" variant="primary">Es wurden noch keine Notizen geteilt.</Alert>
           }
