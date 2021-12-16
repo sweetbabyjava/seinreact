@@ -21,7 +21,7 @@ const ShareModal = ({ note, shareModal, shareModalClose, setSuccess, setError })
 
     function handleShare() {
         shareModalClose()
-        axios.put(process.env.REACT_APP_AXIOS_BASE_URL + 'notes/share/' + useRef, note, {
+        axios.put(process.env.REACT_APP_AXIOS_BASE_URL + 'notes/share/' + userRef.current.value, note, {
             headers: {
                 Authorization: 'Bearer ' + currentToken
             }
