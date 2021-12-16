@@ -38,11 +38,11 @@ export default function Data() {
     <><center><h1 className="text-white bg-dark mt-2">Notizen</h1></center>
       <Tabs variant="tabs" fill defaultActiveKey="mynotes" id="uncontrolled-tab-example" className="mb-0 text-white btn-dark">
         <Tab eventKey="mynotes" title="Meine Notizen" className="text-white">
-          {notes && <Contacts notes={notes}></Contacts>}
+          {notes && <Contacts notes={notes} noteType="own"></Contacts>}
         </Tab>
         <Tab eventKey="sharedwith" title="Mit dir geteilt" className="text-white  ">
           {sharedNotes ?
-            <Contacts notes={sharedNotes}></Contacts> :
+            <Contacts notes={sharedNotes} noteType="shared"></Contacts> :
             <Alert className="mt-2 mb-0 text-center" variant="primary">Es wurden noch keine Notizen geteilt.</Alert>
           }
         </Tab>
@@ -51,8 +51,8 @@ export default function Data() {
         </Tab>
       </Tabs>
       <Link to='/Contact'
-        state={{ detail: { title: "", text: "" }, formTitle: "Notiz Anlegen", notEditable: true }}
-        className="btn btn-dark w-100 mt-3">Neue Notiz anlegen
+        state={{ detail: { title: "", text: "" }, formTitle: "Notiz Anlegen", notEditable: true, noteType: "own" }}
+        className="btn btn-dark w-100 mt-3">Notiz erstellen
       </Link>
 
       <Link to="/"

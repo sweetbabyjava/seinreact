@@ -10,7 +10,7 @@ export default function Contact() {
   const textRef = useRef()
   const languageRef = useRef()
   const location = useLocation()
-  const { detail, formTitle, notEditable } = location.state
+  const { detail,noteType, formTitle, notEditable } = location.state
   const [note, setNote] = useState(detail)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -188,12 +188,12 @@ export default function Contact() {
             </Form.Group>
             {error && <Alert className="mt-2 mb-0" variant="danger" onClose={() => setError("")} dismissible>{error}</Alert>}
             {success && <Alert className="mt-2 mb-0" variant="success" onClose={() => setSuccess("")} dismissible>{success}</Alert>}
-            {!notEditable &&
+            {!notEditable && noteType === "own" && 
               <Button disabled={loading} className="w-100 mt-2 btn-light" type="submit">
                 Speichern
               </Button>
             }
-            {notEditable &&
+            {notEditable && noteType === "own" &&
             <Button
               onClick={addNote}
               disabled={loading}
@@ -202,7 +202,7 @@ export default function Contact() {
               Hinzufügen
             </Button>
             }
-            {!notEditable &&
+            {!notEditable && noteType !== "shared" &&
               <Row className="mt-2">
                 <Col className="w-50">
                   <Form.Select ref={languageRef} defaultValue="" aria-label="Sprachauswahl">
@@ -225,7 +225,7 @@ export default function Contact() {
                 </Col>
               </Row>
             }
-            {!notEditable &&
+            {!notEditable && noteType !== "shared" &&
               <Button
                 onClick={deleteNote}
                 disabled={loading}
@@ -234,7 +234,7 @@ export default function Contact() {
                 Löschen
               </Button>
             }
-            {!notEditable &&
+            {!notEditable && noteType !== "shared" &&
               <Button
                 onClick={shareModalShow}
                 disabled={loading}
